@@ -4,6 +4,7 @@ import com.example.homeassignment.dto.Dto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.text.ParseException;
@@ -14,22 +15,22 @@ import java.util.List;
 @Configuration
 public class Utils {
 
-    private List<String> getListFromFile() throws IOException {
+    private List<String> getListFromFile(MultipartFile file) throws IOException {
         List<String> list  = new ArrayList<>();
-        File file = new File("DataFIle.txt");
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
         String line = "";
         while (true){
             line = br.readLine();
             if(line == null  ) break;
             if(line.length()>0) list.add(line);
         }
+        System.out.println(list.size());
         return list;
     }
 
-    @Bean
-    public List<Dto> getDataFromFile(List<Dto> resultList) throws IOException, ParseException {
-        List<String> list = getListFromFile();
+
+    public List<Dto> getDataFromFile(List<Dto> resultList, MultipartFile file) throws IOException, ParseException {
+        List<String> list = getListFromFile(file);
         for (int i = 0; i <list.size() ; i++) {
             String str = list.get(i);
             if (str.length() != 38) throw new ParseException("Input Length incorrect: " + str.length(),0);

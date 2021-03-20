@@ -1,24 +1,27 @@
 package com.example.homeassignment.controllers;
 
-import com.example.homeassignment.dto.Dto;
-import com.example.homeassignment.service.Service;
+import com.example.homeassignment.service.ServiceClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.*;
+
 import java.text.ParseException;
-import java.util.List;
+
 
 @RestController
+@CrossOrigin
 public class Controller {
 
     @Autowired
-    Service service;
+    ServiceClass service;
 
-@GetMapping("/getData")
-public ResponseEntity getData() throws IOException, ParseException {
-    return service.getData();
-}
+
+    @PutMapping("/putFile")
+    public ResponseEntity putFile(@RequestParam("file") MultipartFile file) throws IOException, ParseException {
+
+        return ResponseEntity.ok(service.getData(file));
+    }
 }
